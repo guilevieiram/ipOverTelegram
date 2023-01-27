@@ -54,6 +54,7 @@ dkms.conf
 # cmake and make
 *.cmake
 CMakeCache.txt
+CMakeFiles
 build/
 main
 client
