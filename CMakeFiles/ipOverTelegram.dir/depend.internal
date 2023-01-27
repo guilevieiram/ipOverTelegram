@@ -4,6 +4,8 @@
 CMakeFiles/ipOverTelegram.dir/src/encryptor.c.o
  /mnt/c/Users/guilh/code/ipOverTelegram/src/encryptor.c
  include/encryptor.h
+CMakeFiles/ipOverTelegram.dir/src/request.c.o
+ /mnt/c/Users/guilh/code/ipOverTelegram/src/request.c
 CMakeFiles/ipOverTelegram.dir/src/telegram.c.o
  /mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.c
  include/telegram.h

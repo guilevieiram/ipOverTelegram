@@ -6,14 +6,15 @@
 [x] Makefile;
 [x] Implement dummy interfaces;
 
+## Encryption
+[x] Implement encryption interface;
+[x] Test implementation;
+
 ## Telegram
 [x] Create bots and chat; 
 [] Implement Bot interface;
 [] Test implementation;
 
-## Encryption
-[] Implement encryption interface;
-[] Test implementation;
 
 ## Client
 [] L3 interception mechanism;

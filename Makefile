@@ -270,6 +270,33 @@ src/encryptor.c.s:
 	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/encryptor.c.s
 .PHONY : src/encryptor.c.s
 
+src/request.o: src/request.c.o
+
+.PHONY : src/request.o
+
+# target to build an object file
+src/request.c.o:
+	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/request.c.o
+.PHONY : src/request.c.o
+
+src/request.i: src/request.c.i
+
+.PHONY : src/request.i
+
+# target to preprocess a source file
+src/request.c.i:
+	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/request.c.i
+.PHONY : src/request.c.i
+
+src/request.s: src/request.c.s
+
+.PHONY : src/request.s
+
+# target to generate assembly for a file
+src/request.c.s:
+	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/request.c.s
+.PHONY : src/request.c.s
+
 src/telegram.o: src/telegram.c.o
 
 .PHONY : src/telegram.o
@@ -321,6 +348,9 @@ help:
 	@echo "... src/encryptor.o"
 	@echo "... src/encryptor.i"
 	@echo "... src/encryptor.s"
+	@echo "... src/request.o"
+	@echo "... src/request.i"
+	@echo "... src/request.s"
 	@echo "... src/telegram.o"
 	@echo "... src/telegram.i"
 	@echo "... src/telegram.s"
