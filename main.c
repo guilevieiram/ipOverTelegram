@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "encryptor.h"
 
 /**
@@ -10,13 +11,20 @@
 int main(){
     printf("main\n");
 
-    byte b[4] = "0123";
-    char* string = "";
-    encrypt(&b[0], &string);
-    printf("out : %s\n", string);
-    byte* bb = "";
-    decrypt(string, &bb);
-    printf("out dec: %s \n", bb);
+    byte bytes[5] = "asdf"; 
+    char* string_out = "";
+    encrypt((byte *)bytes, &string_out);
+    for(int i = 0 ; i < (int)strlen(string_out); i++)
+        printf("out enc: %c\n", string_out[i]);
+
+
+
+    char string[30] = "small large next";
+    byte* bytes_out = "";
+    decrypt(string, &bytes_out);
+    for(int i = 0 ; i < (int)strlen(bytes_out); i++)
+        printf("out dec: %c\n", bytes_out[i]);
+    // printf("out dec: %s \n", bb);
 
     return 1;
 }
