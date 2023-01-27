@@ -7,7 +7,7 @@
 [x] Implement dummy interfaces;
 
 ## Telegram
-[] Create bots and chat; 
+[x] Create bots and chat; 
 [] Implement Bot interface;
 [] Test implementation;
 

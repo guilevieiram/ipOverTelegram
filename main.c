@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "encryptor.h"
 
 /**
  * Main file
@@ -8,5 +9,11 @@
 */
 int main(){
     printf("main\n");
+
+    byte b[4] = "0123";
+    char* string = "";
+    encrypt(&b[0], &string);
+    printf("out : %s\n", string);
+
     return 1;
 }

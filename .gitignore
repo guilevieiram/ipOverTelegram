@@ -60,5 +60,8 @@ main
 client
 server
 
+# environmental variables
+envs.sh
+
 # edittor configurations
 .vscode/
