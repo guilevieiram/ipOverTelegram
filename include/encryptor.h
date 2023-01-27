@@ -32,7 +32,7 @@ int encrypt(const byte* bytes, char** destination);
  * @param output: pointer to the bytes array to save the message;
  * 
 */
-int decrypt(const char* input, byte** output);
+int decrypt(char* input, byte** output);
 
 
 /**

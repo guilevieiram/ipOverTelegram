@@ -14,6 +14,9 @@ int main(){
     char* string = "";
     encrypt(&b[0], &string);
     printf("out : %s\n", string);
+    byte* bb = "";
+    decrypt(string, &bb);
+    printf("out dec: %s \n", bb);
 
     return 1;
 }

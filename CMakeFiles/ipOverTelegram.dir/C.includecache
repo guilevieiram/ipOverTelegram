@@ -9,6 +9,8 @@
 /mnt/c/Users/guilh/code/ipOverTelegram/src/encryptor.c
 stdio.h
 -
+stdlib.h
+-
 string.h
 -
 encryptor.h
