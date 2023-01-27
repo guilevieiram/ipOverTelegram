@@ -20,7 +20,7 @@ typedef char byte;
  * 
  * used by the interfaces to encode and decode the bytes in natural language.
 */
-const char* _dictionary [VOCABULARY_LEN]{
+const char* _dictionary [VOCABULARY_LEN] = {
     "the",
     "of",
     "and",

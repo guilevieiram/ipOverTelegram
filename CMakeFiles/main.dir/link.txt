@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/main.dir/main.c.o  -o main  -Wl,-rpath,/mnt/c/Users/guilh/code/ipOverTelegram libipOverTelegram.so 

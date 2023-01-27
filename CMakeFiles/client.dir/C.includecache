@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/guilh/code/ipOverTelegram/client.c
+stdio.h
+-
+client.h
+/mnt/c/Users/guilh/code/ipOverTelegram/client.h
+
+include/client.h
+telegram.h
+include/telegram.h
+encryptor.h
+include/encryptor.h
+
+include/encryptor.h
+
+include/telegram.h
+

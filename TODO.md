@@ -1,10 +1,10 @@
 # TODO
 
 ## Setup
-[] Project folder structure;
-[] Set interfaces;
-[] Makefile;
-[] Implement dummy interfaces;
+[x] Project folder structure;
+[x] Set interfaces;
+[x] Makefile;
+[x] Implement dummy interfaces;
 
 ## Telegram
 [] Create bots and chat; 
