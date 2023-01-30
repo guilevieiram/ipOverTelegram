@@ -11,8 +11,12 @@ stdio.h
 -
 stdlib.h
 -
+string.h
+-
 server.h
 /mnt/c/Users/guilh/code/ipOverTelegram/server.h
+encryptor.h
+/mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
 
 include/encryptor.h
 

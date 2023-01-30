@@ -9,6 +9,8 @@
 /mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.c
 stdio.h
 -
+stdlib.h
+-
 string.h
 -
 unistd.h

@@ -1,58 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "server.h"
+#include "encryptor.h"
 
-#define BUFSIZE 160
 
 /**
  * Server implementation
 */
 
 void process_message(char* message, const void* arg){
-    printf("processing %s \n", message);
+    printf("processing: %s \n", message);
+    byte* dump = "";
+
+    if(message == NULL) return;
+    if(strstr(message, "client: ") == NULL) return;
+    message += strlen("client: ") ;
+
+    if(decrypt(message, &dump) < 0){
+        fprintf(stderr, "Server could not decrypt received message.\n");
+    }
+
+    printf("dump: %s\n", dump);
 }
 
 int main(){
-
-/**
- * SETTING UP SERVER ENVS
- * 
- * Environment variables implementation from https://joequery.me/code/environment-variable-c/
-*/
+    // 
+    // SETTING UP SERVER ENVS
+    // 
+    // Environment variables implementation from https://joequery.me/code/environment-variable-c/
+    //
     config_t config;
-    char *client_bot_id = "SERVER_BOT_ID";
-    char *chat_id = "TELEGRAM_CHAT_ID";
-
     int frequency = 1;
 
-    config.bot_id = malloc(BUFSIZE);
-    config.chat_id = malloc(BUFSIZE);
     config.frequency = &frequency;
     config.local_ip = NULL;
-
-
-    // getting client bot identifier
-
-    if(!getenv(client_bot_id)){
-        fprintf(stderr, "The environment variable %s was not found.\n", client_bot_id);
-        return -1;
-    }
-    if(snprintf(config.bot_id, BUFSIZE, "%s", getenv(client_bot_id)) >= BUFSIZE){
-        fprintf(stderr, "BUFSIZE of %d was too small. Aborting\n", BUFSIZE);
+    if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
+        fprintf(stderr, "Server bot setup error.\n");
         return -1;
     }
 
-    if(!getenv(chat_id)){
-        fprintf(stderr, "The environment variable %s was not found.\n", chat_id);
-        return -1;
-    }
-    if(snprintf(config.chat_id, BUFSIZE, "%s", getenv(chat_id)) >= BUFSIZE){
-        fprintf(stderr, "BUFSIZE of %d was too small. Aborting\n", BUFSIZE);
+    if(read_posts(process_message, NULL, &config) < 0){
+        fprintf(stderr, "Could bot read posts.\n");
         return -1;
     }
 
-    printf("bot_id: %s, chat_id: %s\n", config.bot_id, config.chat_id);
-    read_posts(process_message, NULL, &config);
+    free(config.bot_id);
+    free(config.chat_id);
 
     return 1;
 }

@@ -9,9 +9,7 @@
  *
 */
 
-// max size of a request
-#define MAXREQ 5000
-#define MAXTEXT 4000
+#define ENVBUFF 160 // buffer for the env variables
 
 struct config_t {
     char* local_ip; // string storing the local ip address to be refereed by the bot. 
@@ -27,10 +25,12 @@ typedef struct config_t config_t;
  * Setup function.
  * 
  * @param config: configuration object for the bot;
+ * @param bot_id_key: environment key to get the bot id;
+ * @param chat_id_key: environment key to get the chat id;
  * 
  * @return: -1 in case of any error 1 in completed execution
 */
-int setup(const config_t* config);
+int setup(config_t* config, char* bot_id_key, char* chat_id_key);
 
 
 /**
