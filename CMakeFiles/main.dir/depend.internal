@@ -4,3 +4,4 @@
 CMakeFiles/main.dir/main.c.o
  /mnt/c/Users/guilh/code/ipOverTelegram/main.c
  include/encryptor.h
+ include/request.h

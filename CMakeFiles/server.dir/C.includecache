@@ -9,6 +9,8 @@
 /mnt/c/Users/guilh/code/ipOverTelegram/server.c
 stdio.h
 -
+stdlib.h
+-
 server.h
 /mnt/c/Users/guilh/code/ipOverTelegram/server.h
 

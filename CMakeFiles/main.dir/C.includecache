@@ -13,6 +13,10 @@ string.h
 -
 encryptor.h
 /mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
+request.h
+/mnt/c/Users/guilh/code/ipOverTelegram/request.h
 
 include/encryptor.h
+
+include/request.h
 

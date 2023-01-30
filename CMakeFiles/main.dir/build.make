@@ -80,6 +80,7 @@ main_EXTERNAL_OBJECTS =
 main: CMakeFiles/main.dir/main.c.o
 main: CMakeFiles/main.dir/build.make
 main: libipOverTelegram.so
+main: /usr/lib/x86_64-linux-gnu/libcurl.so
 main: CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)

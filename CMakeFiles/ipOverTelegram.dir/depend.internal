@@ -8,4 +8,5 @@ CMakeFiles/ipOverTelegram.dir/src/request.c.o
  /mnt/c/Users/guilh/code/ipOverTelegram/src/request.c
 CMakeFiles/ipOverTelegram.dir/src/telegram.c.o
  /mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.c
+ include/request.h
  include/telegram.h

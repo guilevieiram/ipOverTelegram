@@ -11,10 +11,14 @@
 */
 int main(){
     printf("main\n");
-    char * res = get("https://google.com");
-    printf("%s\n", res)
 
-    // byte bytes[5] = "asdf"; 
+    
+
+    // char* url = "https://catfact.ninja/fact/";
+    // char* res = get(url);
+    // printf("%s\n", res);
+
+    // byte bytes[5] = "23jbc"; 
     // char* string_out = "";
     // encrypt((byte *)bytes, &string_out);
     // for(int i = 0 ; i < (int)strlen(string_out); i++)

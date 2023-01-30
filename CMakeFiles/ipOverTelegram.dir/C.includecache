@@ -6,9 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/guilh/code/ipOverTelegram/src/request.c
+/mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.c
 stdio.h
 -
-curl.h
+string.h
 -
+unistd.h
+-
+telegram.h
+/mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.h
+request.h
+/mnt/c/Users/guilh/code/ipOverTelegram/src/request.h
+
+include/request.h
+
+include/telegram.h
 

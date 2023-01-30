@@ -9,6 +9,10 @@
  *
 */
 
+// max size of a request
+#define MAXREQ 5000
+#define MAXTEXT 4000
+
 struct config_t {
     char* local_ip; // string storing the local ip address to be refereed by the bot. 
     char* bot_id; // bot identifier. Provided by telegram
@@ -42,7 +46,7 @@ int setup(const config_t* config);
  * 
  * @return: -1 for errors; 1 for completed execution; 
 */
-int read_posts(const void process_response(char *, const void *), const void* args, const config_t* config);
+int read_posts(void (*process_response)(char *, const void *), const void* args, const config_t* config);
 
 
 /**
