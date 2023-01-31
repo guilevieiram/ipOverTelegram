@@ -13,6 +13,12 @@ stdlib.h
 -
 string.h
 -
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
 server.h
 /mnt/c/Users/guilh/code/ipOverTelegram/server.h
 encryptor.h

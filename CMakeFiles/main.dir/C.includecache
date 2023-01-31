@@ -41,6 +41,12 @@ errno.h
 -
 stdarg.h
 -
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
 
 include/encryptor.h
 

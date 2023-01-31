@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #include "server.h"
 #include "encryptor.h"
 
@@ -34,6 +39,30 @@ void process_message(char* message, const void* arg){
     for (int i = 0; i < package_size; i++)
         printf("%02hhX ", package[i]);
     printf("\nenddump \n");
+
+    // TESTING TO REINSERT PACKET
+
+    int sockfd;
+    struct sockaddr_in next_hop_router;
+
+    // Create a raw socket
+    sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+    if (sockfd < 0) {
+        perror("socket");
+        return;
+    }
+
+    // Fill in the sockaddr_in structure for the next hop router
+    memset(&next_hop_router, 0, sizeof(next_hop_router));
+    next_hop_router.sin_family = AF_INET;
+    next_hop_router.sin_addr.s_addr = inet_addr("192.168.1.1");
+
+
+    // Send the packet to the next hop router
+    if (sendto(sockfd, package, package_size, 0, (struct sockaddr*)&next_hop_router, sizeof(next_hop_router)) < 0) {
+        perror("sendto");
+        return;
+    }
 
     return;
 }
