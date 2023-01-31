@@ -92,7 +92,7 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
             strcat(url, identifier);
         }
 
-        printf("getting: %s\n", url);
+        //printf("getting: %s\n", url);
         response = get(url);
 
         if(response == NULL){
@@ -112,7 +112,6 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
                 timestamp = atoi(date);
                 recent_text = malloc(strlen(text) + 2);
                 strcpy(recent_text, text);
-		printf("recent_text: %s\n", recent_text);
                 recent_identifier = malloc(strlen(identifier) + 2);
                 strcpy(recent_identifier, identifier);
             }

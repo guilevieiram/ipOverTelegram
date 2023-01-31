@@ -89,7 +89,7 @@ int decrypt(const char* input, const int length, byte** output){
         *output = bytes_pointer;
 
         // getting the next word
-		word = strtok(NULL, delimiter);
+	word = strtok(NULL, delimiter);
     }
 
     // freeing the first byte

@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/ec2-user/ipOverTelegram/src/encryptor.c
-stdio.h
--
-stdlib.h
--
-string.h
--
-encryptor.h
-/home/ec2-user/ipOverTelegram/src/encryptor.h
-
 /home/ec2-user/ipOverTelegram/src/telegram.c
 stdio.h
 -
@@ -29,8 +19,6 @@ telegram.h
 /home/ec2-user/ipOverTelegram/src/telegram.h
 request.h
 /home/ec2-user/ipOverTelegram/src/request.h
-
-include/encryptor.h
 
 include/request.h
 
