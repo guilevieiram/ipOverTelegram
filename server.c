@@ -6,6 +6,18 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <linux/if_tun.h>
+#include <net/if.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "server.h"
 #include "encryptor.h"
 
@@ -13,6 +25,56 @@
 /**
  * Server implementation
 */
+
+int tun_alloc(char *dev, int flags){
+
+    struct ifreq ifr;
+    int fd, err;
+    char *clonedev = "/dev/net/tun";
+
+    /* Arguments taken by the function:
+     *
+     * char *dev: the name of an interface (or '\0'). MUST have enough
+     *   space to hold the interface name if '\0' is passed
+     * int flags: interface flags (eg, IFF_TUN etc.)
+     */
+
+    /* open the clone device */
+    if ((fd = open(clonedev, O_RDWR)) < 0)
+    {
+        return fd;
+    }
+
+    /* preparation of the struct ifr, of type "struct ifreq" */
+    memset(&ifr, 0, sizeof(ifr));
+
+    ifr.ifr_flags = flags; /* IFF_TUN or IFF_TAP, plus maybe IFF_NO_PI */
+
+    if (*dev)
+    {
+        /* if a device name was specified, put it in the structure; otherwise,
+         * the kernel will try to allocate the "next" device of the
+         * specified type */
+        strncpy(ifr.ifr_name, dev, IFNAMSIZ);
+    }
+
+    /* try to create the device */
+    if ((err = ioctl(fd, TUNSETIFF, (void *)&ifr)) < 0)
+    {
+        close(fd);
+        return err;
+    }
+
+    /* if the operation was successful, write back the name of the
+     * interface to the variable "dev", so the caller can know
+     * it. Note that the caller MUST reserve space in *dev (see calling
+     * code below) */
+    strcpy(dev, ifr.ifr_name);
+
+    /* this is the special file descriptor that the caller will use to talk
+     * with the virtual interface */
+    return fd;
+}
 
 void process_message(char* message, const void* arg){
     // package variables
@@ -41,28 +103,44 @@ void process_message(char* message, const void* arg){
     printf("\nenddump \n");
 
     // TESTING TO REINSERT PACKET
+    int tunnel_fd;
+    int nwrite;
+    char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
 
-    int sockfd;
-    struct sockaddr_in next_hop_router;
-
-    // Create a raw socket
-    sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-    if (sockfd < 0) {
-        perror("socket");
+    strcpy(tunnel_name, "tun0");
+    tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
+    if (tunnel_fd < 0){
+        fprintf(stderr, "Tunnel setup error.\n");
         return;
     }
-
-    // Fill in the sockaddr_in structure for the next hop router
-    memset(&next_hop_router, 0, sizeof(next_hop_router));
-    next_hop_router.sin_family = AF_INET;
-    next_hop_router.sin_addr.s_addr = inet_addr("192.168.1.1");
-
-
-    // Send the packet to the next hop router
-    if (sendto(sockfd, package, package_size, 0, (struct sockaddr*)&next_hop_router, sizeof(next_hop_router)) < 0) {
-        perror("sendto");
+    nwrite = write(tunnel_fd, package, sizeof(package));
+    if(nwrite < 0){
+        fprintf(stderr, "Error capturing package.\n");
         return;
     }
+    printf("bytes writen in the tunnel: %d", nwrite);
+
+    // int sockfd;
+    // struct sockaddr_in next_hop_router;
+
+    // // Create a raw socket
+    // sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+    // if (sockfd < 0) {
+    //     perror("socket");
+    //     return;
+    // }
+
+    // // Fill in the sockaddr_in structure for the next hop router
+    // memset(&next_hop_router, 0, sizeof(next_hop_router));
+    // next_hop_router.sin_family = AF_INET;
+    // next_hop_router.sin_addr.s_addr = inet_addr("0.0.0.0");
+
+
+    // // Send the packet to the next hop router
+    // if (sendto(sockfd, package, package_size, 0, (struct sockaddr*)&next_hop_router, sizeof(next_hop_router)) < 0) {
+    //     perror("sendto");
+    //     return;
+    // }
 
     return;
 }

@@ -55,38 +55,44 @@ int main(){
         return -1;
     }
 
-    // intercepting package
-    package_size = read(tunnel_fd, package, sizeof(package));
-    if(package_size < 0){
-        fprintf(stderr, "Error capturing package.\n");
-        return -1;
+    while(1){
+        message = "";
+        message_pack = "";
+
+        // intercepting package
+        package_size = read(tunnel_fd, package, sizeof(package));
+        if(package_size < 0){
+            fprintf(stderr, "Error capturing package.\n");
+            return -1;
+        }
+
+        // printing the intercepted package (for debugging purposes)
+        for (int i = 0; i < package_size; i++)
+            printf("%02hhX ", package[i]);
+            // printf("%d ", package[i]);
+
+        // encrypting the package
+        if (encrypt(package, package_size, &message_pack) < 0) {
+            fprintf(stderr, "Encryption error.\n");
+            return -1;
+        }
+
+        // constructing the telegram message
+        message = (char *)malloc(
+            strlen("client: ") + 
+            strlen(message_pack) +
+            1
+        );
+        strcpy(message, "client: ");
+        strcat(message, message_pack);
+
+        // sending the message in the chat
+        if(send_message(message, &config) < 0){
+            fprintf(stderr, "Error sending message.\n");
+            return -1;
+        }
     }
 
-    // printing the intercepted package (for debugging purposes)
-    for (int i = 0; i < package_size; i++)
-        printf("%02hhX ", package[i]);
-        // printf("%d ", package[i]);
-
-    // encrypting the package
-    if (encrypt(package, package_size, &message_pack) < 0) {
-        fprintf(stderr, "Encryption error.\n");
-        return -1;
-    }
-
-    // constructing the telegram message
-    message = (char *)malloc(
-        strlen("client: ") + 
-        strlen(message_pack) +
-        1
-    );
-    strcpy(message, "client: ");
-    strcat(message, message_pack);
-
-    // sending the message in the chat
-    if(send_message(message, &config) < 0){
-        fprintf(stderr, "Error sending message.\n");
-        return -1;
-    }
 
     // cleanup
     free(message);

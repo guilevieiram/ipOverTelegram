@@ -1,1 +1,1 @@
-/usr/bin/cc    CMakeFiles/main.dir/main.c.o  -o main  -Wl,-rpath,/mnt/c/Users/guilh/code/ipOverTelegram libipOverTelegram.so /usr/lib/x86_64-linux-gnu/libcurl.so 
+/usr/bin/cc   -rdynamic CMakeFiles/main.dir/main.c.o  -o main  -Wl,-rpath,/mnt/c/Users/guilh/code/ipOverTelegram libipOverTelegram.so -lcurl 

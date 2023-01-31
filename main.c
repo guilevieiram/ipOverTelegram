@@ -23,7 +23,7 @@
 #include <arpa/inet.h>
 
 int main() {
-    int sockfd;
+    int sockfd, sent;
     struct sockaddr_in next_hop_router;
     unsigned char packet[] = {
         0x45, 0x00, 0x00, 0x3C, 0x79, 0x0A, 0x40, 0x00, 0x40, 0x06, 0x14, 0x5F, 0x12, 0x82, 0x44, 0x00, 0x12, 0x82, 0x44, 0x4F, 0x95, 0xF4, 0x1F, 0x90, 0x9F, 0x77, 0xF9, 0x9B, 0x00, 0x00, 0x00, 0x00, 0xA0, 0x02, 0xFA, 0xF0, 0x86, 0x59, 0x00, 0x00, 0x02, 0x04, 0x05, 0xB4, 0x04, 0x02, 0x08, 0x0A, 0xBB, 0x40, 0x0F, 0x8A, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x03, 0x07
@@ -36,18 +36,24 @@ int main() {
         perror("socket");
         return 1;
     }
+    int on=1;
+    if(setsockopt(sockfd, SOL_SOCKET, SO_BROADCAST, &on, sizeof(on))<0){
+        printf("opt error\n");
+        return -1;
+    }
 
     // Fill in the sockaddr_in structure for the next hop router
     memset(&next_hop_router, 0, sizeof(next_hop_router));
     next_hop_router.sin_family = AF_INET;
-    next_hop_router.sin_addr.s_addr = inet_addr("192.168.1.1");
+    next_hop_router.sin_addr.s_addr = inet_addr("13.42.57.20");
 
 
     // Send the packet to the next hop router
-    if (sendto(sockfd, packet, packet_len, 0, (struct sockaddr*)&next_hop_router, sizeof(next_hop_router)) < 0) {
+    if ((sent = sendto(sockfd, packet, packet_len, 0, (struct sockaddr*)&next_hop_router, sizeof(next_hop_router)) )< 0) {
         perror("sendto");
         return 1;
     }
+    printf("len: %d, sent %d\n",packet_len, sent);
 
     return 0;
 }
