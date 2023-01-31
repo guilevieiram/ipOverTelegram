@@ -80,6 +80,7 @@ void process_message(char* message, const void* arg){
     // package variables
     byte* package;
     int package_size;
+    int nwrite = 0;
 
     printf("\nprocessing:\n%s\n", message);
 
@@ -103,17 +104,7 @@ void process_message(char* message, const void* arg){
     printf("\nenddump \n");
 
     // TESTING TO REINSERT PACKET
-    int tunnel_fd;
-    int nwrite;
-    char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
-
-    strcpy(tunnel_name, "tun0");
-    tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
-    if (tunnel_fd < 0){
-        fprintf(stderr, "Tunnel setup error.\n");
-        return;
-    }
-    nwrite = write(tunnel_fd, package, sizeof(package));
+    nwrite = write(*(int *)arg, package, sizeof(package));
     if(nwrite < 0){
         fprintf(stderr, "Error capturing package.\n");
         return;
@@ -148,6 +139,8 @@ void process_message(char* message, const void* arg){
 int main(){
     config_t config;
     int frequency = 1;
+    int tunnel_fd;
+    char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
 
     config.frequency = &frequency;
     config.local_ip = NULL;
@@ -156,7 +149,14 @@ int main(){
         return -1;
     }
 
-    if(read_posts(process_message, NULL, &config) < 0){
+    strcpy(tunnel_name, "tun1");
+    tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
+    if (tunnel_fd < 0){
+        fprintf(stderr, "Tunnel setup error.\n");
+        return;
+    }
+
+    if(read_posts(process_message, &tunnel_fd, &config) < 0){
         fprintf(stderr, "Could bot read posts.\n");
         return -1;
     }

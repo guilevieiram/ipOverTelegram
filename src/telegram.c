@@ -6,8 +6,15 @@
 #include "request.h"
 
 
-int parse_response(char** response, char** text, char** date){
-    char *date_end, *text_end;
+int parse_response(char** response, char** text, char** date, char** identifier){
+    char *date_end, *text_end, *id_end;
+
+    *identifier = strstr(*response, "\"update_id\":");
+    if(*identifier == NULL) return -1;
+    *identifier += strlen("\"update_id\":");
+    id_end = strstr(*identifier, ",");
+    *id_end = '\0';
+
     *date = strstr(*response, "\"date\":");
     if(*date == NULL) return -1;
     *date += strlen("\"date\":");
@@ -60,21 +67,30 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
     char* url = (char*)malloc(
         strlen("https://api.telegram.org/bot") + 
         strlen(config->bot_id) + 
-        strlen("/getUpdates") + 1
+        strlen("/getUpdates") +
+        strlen("?offset=") +
+        + 20 // identifier max size
+        + 1
     );
 
     char* response = "",
         *date = "",
-        *text = "";
+        *text = "",
+        *identifier = NULL;
 
     char* recent_text = malloc(1);
+    char* recent_identifier = malloc(1);
     size_t timestamp = 0, old_timestamp = 0;
 
-    strcpy(url, "https://api.telegram.org/bot");
-    strcat(url, config->bot_id);
-    strcat(url, "/getUpdates");
-    
     while(1){ // rudimentary implementation but it does go over firewalls
+
+        strcpy(url, "https://api.telegram.org/bot");
+        strcat(url, config->bot_id);
+        strcat(url, "/getUpdates");
+        if (identifier != NULL){
+            strcat(url, "?offset=");
+            strcat(url, identifier);
+        }
         response = get(url);
 
         if(response == NULL){
@@ -89,11 +105,13 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
         }
 
         // parsing response, saving the latest
-        while(parse_response(&response, &text, &date) > 0){
+        while(parse_response(&response, &text, &date, &identifier) > 0){
             if(timestamp < (size_t)atoi(date)) {
                 timestamp = atoi(date);
                 recent_text = malloc(strlen(text) + 2);
                 strcpy(recent_text, text);
+                recent_identifier = malloc(strlen(identifier) + 2);
+                strcpy(recent_identifier, identifier);
             }
         }
 
