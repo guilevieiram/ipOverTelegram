@@ -91,6 +91,8 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
             strcat(url, "?offset=");
             strcat(url, identifier);
         }
+
+        printf("getting: %s\n", url);
         response = get(url);
 
         if(response == NULL){
@@ -106,6 +108,7 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
 
         // parsing response, saving the latest
         while(parse_response(&response, &text, &date, &identifier) > 0){
+            printf("timestamp: %ld, oldstamp: %ld, id: %s", timestamp, old_timestamp, identifier);
             if(timestamp < (size_t)atoi(date)) {
                 timestamp = atoi(date);
                 recent_text = malloc(strlen(text) + 2);

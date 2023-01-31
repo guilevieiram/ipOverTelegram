@@ -111,28 +111,6 @@ void process_message(char* message, const void* arg){
     }
     printf("bytes writen in the tunnel: %d", nwrite);
 
-    // int sockfd;
-    // struct sockaddr_in next_hop_router;
-
-    // // Create a raw socket
-    // sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-    // if (sockfd < 0) {
-    //     perror("socket");
-    //     return;
-    // }
-
-    // // Fill in the sockaddr_in structure for the next hop router
-    // memset(&next_hop_router, 0, sizeof(next_hop_router));
-    // next_hop_router.sin_family = AF_INET;
-    // next_hop_router.sin_addr.s_addr = inet_addr("0.0.0.0");
-
-
-    // // Send the packet to the next hop router
-    // if (sendto(sockfd, package, package_size, 0, (struct sockaddr*)&next_hop_router, sizeof(next_hop_router)) < 0) {
-    //     perror("sendto");
-    //     return;
-    // }
-
     return;
 }
 
@@ -153,7 +131,7 @@ int main(){
     tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
     if (tunnel_fd < 0){
         fprintf(stderr, "Tunnel setup error.\n");
-        return;
+        return -1;
     }
 
     if(read_posts(process_message, &tunnel_fd, &config) < 0){
