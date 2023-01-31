@@ -15,7 +15,7 @@ int parse_response(char** response, char** text, char** date, char** identifier)
     id_end = strstr(*identifier, ",");
     *id_end = '\0';
 
-    *date = strstr(*response, "\"date\":");
+    *date = strstr(id_end + 1, "\"date\":");
     if(*date == NULL) return -1;
     *date += strlen("\"date\":");
     date_end = strstr(*date, ",");
@@ -108,11 +108,11 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
 
         // parsing response, saving the latest
         while(parse_response(&response, &text, &date, &identifier) > 0){
-            printf("timestamp: %ld, oldstamp: %ld, id: %s", timestamp, old_timestamp, identifier);
             if(timestamp < (size_t)atoi(date)) {
                 timestamp = atoi(date);
                 recent_text = malloc(strlen(text) + 2);
                 strcpy(recent_text, text);
+		printf("recent_text: %s\n", recent_text);
                 recent_identifier = malloc(strlen(identifier) + 2);
                 strcpy(recent_identifier, identifier);
             }

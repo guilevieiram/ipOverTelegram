@@ -1,6 +1,4 @@
-/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles/edit_cache.dir
-/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles/server.dir
-/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles/client.dir
-/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles/main.dir
-/mnt/c/Users/guilh/code/ipOverTelegram/CMakeFiles/ipOverTelegram.dir
+/home/ec2-user/ipOverTelegram/CMakeFiles/client.dir
+/home/ec2-user/ipOverTelegram/CMakeFiles/ipOverTelegram.dir
+/home/ec2-user/ipOverTelegram/CMakeFiles/main.dir
+/home/ec2-user/ipOverTelegram/CMakeFiles/server.dir

@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/guilh/code/ipOverTelegram/server.c
+/home/ec2-user/ipOverTelegram/server.c
 stdio.h
 -
 stdlib.h
@@ -42,9 +42,9 @@ sys/stat.h
 fcntl.h
 -
 server.h
-/mnt/c/Users/guilh/code/ipOverTelegram/server.h
+/home/ec2-user/ipOverTelegram/server.h
 encryptor.h
-/mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
+/home/ec2-user/ipOverTelegram/encryptor.h
 
 include/encryptor.h
 

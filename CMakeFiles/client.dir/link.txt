@@ -1,1 +1,1 @@
-/usr/bin/cc   -rdynamic CMakeFiles/client.dir/client.c.o  -o client  -Wl,-rpath,/mnt/c/Users/guilh/code/ipOverTelegram libipOverTelegram.so -lcurl 
+/usr/bin/cc      CMakeFiles/client.dir/client.c.o  -o client -rdynamic libipOverTelegram.so -lcurl -Wl,-rpath,/home/ec2-user/ipOverTelegram 
