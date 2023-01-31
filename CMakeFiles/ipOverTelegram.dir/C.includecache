@@ -6,21 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.c
+/mnt/c/Users/guilh/code/ipOverTelegram/src/encryptor.c
 stdio.h
 -
 stdlib.h
 -
 string.h
 -
-unistd.h
--
-telegram.h
-/mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.h
-request.h
-/mnt/c/Users/guilh/code/ipOverTelegram/src/request.h
+encryptor.h
+/mnt/c/Users/guilh/code/ipOverTelegram/src/encryptor.h
 
-include/request.h
-
-include/telegram.h
+include/encryptor.h
 

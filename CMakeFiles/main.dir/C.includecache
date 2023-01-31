@@ -7,18 +7,40 @@
 #IncludeRegexTransform: 
 
 /mnt/c/Users/guilh/code/ipOverTelegram/main.c
+encryptor.h
+/mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
 stdio.h
 -
 stdlib.h
 -
 string.h
 -
-encryptor.h
-/mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
-request.h
-/mnt/c/Users/guilh/code/ipOverTelegram/request.h
+unistd.h
+-
+net/if.h
+-
+linux/if_tun.h
+-
+sys/types.h
+-
+sys/socket.h
+-
+sys/ioctl.h
+-
+sys/stat.h
+-
+fcntl.h
+-
+arpa/inet.h
+-
+sys/select.h
+-
+sys/time.h
+-
+errno.h
+-
+stdarg.h
+-
 
 include/encryptor.h
-
-include/request.h
 

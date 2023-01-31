@@ -10,26 +10,35 @@
 */
 
 void process_message(char* message, const void* arg){
-    printf("processing: %s \n", message);
-    byte* dump = "";
+    // package variables
+    byte* package;
+    int package_size;
 
+    printf("\nprocessing:\n%s\n", message);
+
+    // error checking and updating message
     if(message == NULL) return;
     if(strstr(message, "client: ") == NULL) return;
-    message += strlen("client: ") ;
+    message += strlen("client: ");
 
-    if(decrypt(message, &dump) < 0){
+    // decrypting message
+    if((package_size = decrypt(message, strlen(message), &package)) < 0){
         fprintf(stderr, "Server could not decrypt received message.\n");
+        return;
     }
 
-    printf("dump: %s\n", dump);
+
+    // printing the package data for debugging
+    // this part should reinsert the package back in the network
+    printf("dump: \n");
+    for (int i = 0; i < package_size; i++)
+        printf("%02hhX ", package[i]);
+    printf("\nenddump \n");
+
+    return;
 }
 
 int main(){
-    // 
-    // SETTING UP SERVER ENVS
-    // 
-    // Environment variables implementation from https://joequery.me/code/environment-variable-c/
-    //
     config_t config;
     int frequency = 1;
 

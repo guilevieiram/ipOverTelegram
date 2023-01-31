@@ -12,20 +12,20 @@
 
 ## Telegram
 [x] Create bots and chat; 
-[] Implement Bot interface;
-[] Test implementation;
+[x] Implement Bot interface;
+[x] Test implementation;
 
 
 ## Client
-[] L3 interception mechanism;
-[] Implement interface; 
-[] Test client side (sending messages with encoded IP Packages);
+[x] L3 interception mechanism;
+[x] Implement interface; 
+[x] Test client side (sending messages with encoded IP Packages);
 [] Test client reading messages; 
 
 ## Server
-[] Implement interface; 
-[] Connect bot; 
-[] Test implementation (reading messages);
+[x] Implement interface; 
+[x] Connect bot; 
+[x] Test implementation (reading messages);
 [] Test sending IP packages;
 [] Server sending back response;
 

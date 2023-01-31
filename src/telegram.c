@@ -92,7 +92,7 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
         while(parse_response(&response, &text, &date) > 0){
             if(timestamp < (size_t)atoi(date)) {
                 timestamp = atoi(date);
-                recent_text = malloc(strlen(text) + 1);
+                recent_text = malloc(strlen(text) + 2);
                 strcpy(recent_text, text);
             }
         }
@@ -105,6 +105,7 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
 
         sleep(1 / *config->frequency);
     }
+    free(response);
     free(url);
     return 1;
 }
@@ -137,6 +138,7 @@ int send_message(const char* message, const config_t* config){
         return -1;
     }
 
+    free(response);
     free(url);
     return 1;
 }

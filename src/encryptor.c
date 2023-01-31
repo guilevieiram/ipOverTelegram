@@ -4,9 +4,7 @@
 
 #include "encryptor.h"
 
-int encrypt(const byte* bytes, char** destination){
-    // lenght of the input byte array
-    int length = strlen((char *)bytes);
+int encrypt(const byte* bytes, const int length, char** destination){
 
     // temporary pointer for the destination
     char* temporary_pointer = *destination;
@@ -24,14 +22,14 @@ int encrypt(const byte* bytes, char** destination){
         // the +1 to account for spaces
         temporary_pointer = malloc(
             strlen(*destination) + 
-            strlen(_dictionary[(int)temporary_byte]) + 
+            strlen(_dictionary[(int)temporary_byte + 128]) + 
             strlen(" ") + 
             1
         );
 
         // recopying the information in the newly allocated memory
         strcpy(temporary_pointer, *destination);
-        strcat(temporary_pointer, _dictionary[(int)temporary_byte]);
+        strcat(temporary_pointer, _dictionary[(int)temporary_byte + 128]);
         strcat(temporary_pointer, " ");
 
         // remaking the pointer
@@ -41,7 +39,10 @@ int encrypt(const byte* bytes, char** destination){
     return 1;
 }
 
-int decrypt(char* input, byte** output){
+int decrypt(const char* input, const int length, byte** output){
+    // count the output size
+    int number_bytes = 0;
+
     // loop variable to count the current byte
     int byte_index = 0;
 
@@ -49,10 +50,10 @@ int decrypt(char* input, byte** output){
     byte* bytes_pointer = *output;
 
     // string delimiter
-    const char delimiter[1] = " ";
+    const char delimiter[] = " ";
 
-    // copyed string
-    char* string = (char *)malloc(strlen(input) + 1);
+    // copied string
+    char* string = (char *)malloc(length + 1);
     strcpy(string, input);
 
     // storing the words in the string
@@ -64,21 +65,25 @@ int decrypt(char* input, byte** output){
             if(strcmp(word, _dictionary[(int)byte_index]) == 0) 
                 break;
         }
+
+        // updating number of bytes read
+        number_bytes ++;
         
         // error catching
         if(byte_index == VOCABULARY_LEN){
-            printf("ERROR: word not in dictionary.\n");
+            printf("ERROR: word {%s} not in dictionary.\n", word);
             return -1;
         }
 
-        // allocating the nedded memory (1 more than before)
-        bytes_pointer = malloc(strlen(*output) + 2);
+        // allocating the needed memory (1 more than before)
+        bytes_pointer = (char *)malloc(number_bytes + 1);
 
         // copying the previous bytes
-        strcpy(bytes_pointer, *output);
+        for(int i = 0; i < number_bytes; i++)
+            bytes_pointer[i] = (*output)[i];
 
         // inserting the last byte
-        strcat(bytes_pointer, (char*)&byte_index);
+        bytes_pointer[number_bytes] = (char) (byte_index - 128);
 
         // updating the output
         *output = bytes_pointer;
@@ -86,6 +91,11 @@ int decrypt(char* input, byte** output){
         // getting the next word
 		word = strtok(NULL, delimiter);
     }
+
+    // freeing the first byte
+    (*output) ++;
+
     free(string);
-    return 1;
+
+    return number_bytes;
 }
