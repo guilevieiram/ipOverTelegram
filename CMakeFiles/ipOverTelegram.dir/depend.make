@@ -10,3 +10,6 @@ CMakeFiles/ipOverTelegram.dir/src/telegram.c.o: src/telegram.c
 CMakeFiles/ipOverTelegram.dir/src/telegram.c.o: include/request.h
 CMakeFiles/ipOverTelegram.dir/src/telegram.c.o: include/telegram.h
 
+CMakeFiles/ipOverTelegram.dir/src/tunnel.c.o: src/tunnel.c
+CMakeFiles/ipOverTelegram.dir/src/tunnel.c.o: include/tunnel.h
+

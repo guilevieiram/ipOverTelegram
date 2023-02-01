@@ -26,7 +26,7 @@
 [x] Implement interface; 
 [x] Connect bot; 
 [x] Test implementation (reading messages);
-[] Test sending IP packages;
+[x] Test sending IP packages;
 [] Server sending back response;
 
 ## Integration

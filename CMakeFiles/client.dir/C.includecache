@@ -33,6 +33,8 @@ client.h
 /mnt/c/Users/guilh/code/ipOverTelegram/client.h
 encryptor.h
 /mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
+tunnel.h
+/mnt/c/Users/guilh/code/ipOverTelegram/tunnel.h
 
 include/client.h
 telegram.h
@@ -43,4 +45,6 @@ include/encryptor.h
 include/encryptor.h
 
 include/telegram.h
+
+include/tunnel.h
 

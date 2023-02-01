@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <linux/if_tun.h>
 #include <net/if.h>
 #include <unistd.h>
@@ -17,64 +10,51 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <arpa/inet.h>
 
 #include "server.h"
 #include "encryptor.h"
+#include "tunnel.h"
 
 
 /**
  * Server implementation
 */
 
-int tun_alloc(char *dev, int flags){
+// processing message callback function
+void process_message(char* message, const void* arg);
 
-    struct ifreq ifr;
-    int fd, err;
-    char *clonedev = "/dev/net/tun";
+int main(){
+    config_t config;
+    int frequency = 1;
+    int tunnel_fd;
+    char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
 
-    /* Arguments taken by the function:
-     *
-     * char *dev: the name of an interface (or '\0'). MUST have enough
-     *   space to hold the interface name if '\0' is passed
-     * int flags: interface flags (eg, IFF_TUN etc.)
-     */
-
-    /* open the clone device */
-    if ((fd = open(clonedev, O_RDWR)) < 0)
-    {
-        return fd;
+    config.frequency = &frequency;
+    config.local_ip = NULL;
+    if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
+        fprintf(stderr, "Server bot setup error.\n");
+        return -1;
     }
 
-    /* preparation of the struct ifr, of type "struct ifreq" */
-    memset(&ifr, 0, sizeof(ifr));
-
-    ifr.ifr_flags = flags; /* IFF_TUN or IFF_TAP, plus maybe IFF_NO_PI */
-
-    if (*dev)
-    {
-        /* if a device name was specified, put it in the structure; otherwise,
-         * the kernel will try to allocate the "next" device of the
-         * specified type */
-        strncpy(ifr.ifr_name, dev, IFNAMSIZ);
+    strcpy(tunnel_name, "tun1");
+    tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
+    if (tunnel_fd < 0){
+        fprintf(stderr, "Tunnel setup error.\n");
+        return -1;
     }
 
-    /* try to create the device */
-    if ((err = ioctl(fd, TUNSETIFF, (void *)&ifr)) < 0)
-    {
-        close(fd);
-        return err;
+    if(read_posts(process_message, &tunnel_fd, &config) < 0){
+        fprintf(stderr, "Could bot read posts.\n");
+        return -1;
     }
 
-    /* if the operation was successful, write back the name of the
-     * interface to the variable "dev", so the caller can know
-     * it. Note that the caller MUST reserve space in *dev (see calling
-     * code below) */
-    strcpy(dev, ifr.ifr_name);
+    free(config.bot_id);
+    free(config.chat_id);
 
-    /* this is the special file descriptor that the caller will use to talk
-     * with the virtual interface */
-    return fd;
+    return 1;
 }
+
 
 void process_message(char* message, const void* arg){
     // package variables
@@ -108,41 +88,10 @@ void process_message(char* message, const void* arg){
     nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen) );
     nwrite = write(*(int *)arg, package, package_size);
     if(nwrite < 0){
-        fprintf(stderr, "Error capturing package.\n");
+        fprintf(stderr, "Error injecting package.\n");
         return;
     }
-    printf("bytes writen in the tunnel: %d", nwrite);
+    printf("Bytes written in the tunnel: %d\n", nwrite);
 
     return;
-}
-
-int main(){
-    config_t config;
-    int frequency = 1;
-    int tunnel_fd;
-    char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
-
-    config.frequency = &frequency;
-    config.local_ip = NULL;
-    if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
-        fprintf(stderr, "Server bot setup error.\n");
-        return -1;
-    }
-
-    strcpy(tunnel_name, "tun1");
-    tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
-    if (tunnel_fd < 0){
-        fprintf(stderr, "Tunnel setup error.\n");
-        return -1;
-    }
-
-    if(read_posts(process_message, &tunnel_fd, &config) < 0){
-        fprintf(stderr, "Could bot read posts.\n");
-        return -1;
-    }
-
-    free(config.bot_id);
-    free(config.chat_id);
-
-    return 1;
 }

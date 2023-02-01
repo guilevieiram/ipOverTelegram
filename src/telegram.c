@@ -92,7 +92,6 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
             strcat(url, identifier);
         }
 
-        //printf("getting: %s\n", url);
         response = get(url);
 
         if(response == NULL){

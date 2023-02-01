@@ -5,4 +5,5 @@ CMakeFiles/server.dir/server.c.o: server.c
 CMakeFiles/server.dir/server.c.o: include/encryptor.h
 CMakeFiles/server.dir/server.c.o: include/server.h
 CMakeFiles/server.dir/server.c.o: include/telegram.h
+CMakeFiles/server.dir/server.c.o: include/tunnel.h
 

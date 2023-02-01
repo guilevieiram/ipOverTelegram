@@ -13,18 +13,6 @@ stdlib.h
 -
 string.h
 -
-sys/socket.h
--
-netinet/in.h
--
-arpa/inet.h
--
-stdio.h
--
-stdlib.h
--
-string.h
--
 linux/if_tun.h
 -
 net/if.h
@@ -41,10 +29,14 @@ sys/stat.h
 -
 fcntl.h
 -
+arpa/inet.h
+-
 server.h
 /mnt/c/Users/guilh/code/ipOverTelegram/server.h
 encryptor.h
 /mnt/c/Users/guilh/code/ipOverTelegram/encryptor.h
+tunnel.h
+/mnt/c/Users/guilh/code/ipOverTelegram/tunnel.h
 
 include/encryptor.h
 
@@ -55,4 +47,6 @@ encryptor.h
 include/encryptor.h
 
 include/telegram.h
+
+include/tunnel.h
 

@@ -324,6 +324,33 @@ src/telegram.c.s:
 	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/telegram.c.s
 .PHONY : src/telegram.c.s
 
+src/tunnel.o: src/tunnel.c.o
+
+.PHONY : src/tunnel.o
+
+# target to build an object file
+src/tunnel.c.o:
+	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/tunnel.c.o
+.PHONY : src/tunnel.c.o
+
+src/tunnel.i: src/tunnel.c.i
+
+.PHONY : src/tunnel.i
+
+# target to preprocess a source file
+src/tunnel.c.i:
+	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/tunnel.c.i
+.PHONY : src/tunnel.c.i
+
+src/tunnel.s: src/tunnel.c.s
+
+.PHONY : src/tunnel.s
+
+# target to generate assembly for a file
+src/tunnel.c.s:
+	$(MAKE) -f CMakeFiles/ipOverTelegram.dir/build.make CMakeFiles/ipOverTelegram.dir/src/tunnel.c.s
+.PHONY : src/tunnel.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -354,6 +381,9 @@ help:
 	@echo "... src/telegram.o"
 	@echo "... src/telegram.i"
 	@echo "... src/telegram.s"
+	@echo "... src/tunnel.o"
+	@echo "... src/tunnel.i"
+	@echo "... src/tunnel.s"
 .PHONY : help
 
 

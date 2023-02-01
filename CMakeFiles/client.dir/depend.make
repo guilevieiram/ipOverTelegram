@@ -5,4 +5,5 @@ CMakeFiles/client.dir/client.c.o: client.c
 CMakeFiles/client.dir/client.c.o: include/client.h
 CMakeFiles/client.dir/client.c.o: include/encryptor.h
 CMakeFiles/client.dir/client.c.o: include/telegram.h
+CMakeFiles/client.dir/client.c.o: include/tunnel.h
 

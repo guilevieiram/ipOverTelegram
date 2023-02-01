@@ -6,41 +6,31 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/guilh/code/ipOverTelegram/src/encryptor.c
+/mnt/c/Users/guilh/code/ipOverTelegram/src/tunnel.c
 stdio.h
 -
 stdlib.h
 -
 string.h
 -
-encryptor.h
-/mnt/c/Users/guilh/code/ipOverTelegram/src/encryptor.h
-
-/mnt/c/Users/guilh/code/ipOverTelegram/src/request.c
-stdio.h
+linux/if_tun.h
 -
-stdlib.h
--
-string.h
--
-curl/curl.h
--
-
-/mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.c
-stdio.h
--
-stdlib.h
--
-string.h
+net/if.h
 -
 unistd.h
 -
-telegram.h
-/mnt/c/Users/guilh/code/ipOverTelegram/src/telegram.h
-request.h
-/mnt/c/Users/guilh/code/ipOverTelegram/src/request.h
+sys/types.h
+-
+sys/socket.h
+-
+sys/ioctl.h
+-
+sys/stat.h
+-
+fcntl.h
+-
+tunnel.h
+/mnt/c/Users/guilh/code/ipOverTelegram/src/tunnel.h
 
-include/request.h
-
-include/telegram.h
+include/tunnel.h
 
