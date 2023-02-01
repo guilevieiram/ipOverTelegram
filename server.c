@@ -78,7 +78,7 @@ int tun_alloc(char *dev, int flags){
 
 void process_message(char* message, const void* arg){
     // package variables
-    byte* package;
+    byte* package = malloc(1);
     int package_size;
     int nwrite = 0;
 
@@ -104,7 +104,9 @@ void process_message(char* message, const void* arg){
     printf("\nenddump \n");
 
     // TESTING TO REINSERT PACKET
-    nwrite = write(*(int *)arg, package, sizeof(package));
+    int plen = htons(package_size);
+    nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen) );
+    nwrite = write(*(int *)arg, package, package_size);
     if(nwrite < 0){
         fprintf(stderr, "Error capturing package.\n");
         return;
