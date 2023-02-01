@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC   -shared -Wl,-soname,libipOverTelegram.so -o libipOverTelegram.so CMakeFiles/ipOverTelegram.dir/src/encryptor.c.o CMakeFiles/ipOverTelegram.dir/src/request.c.o CMakeFiles/ipOverTelegram.dir/src/telegram.c.o CMakeFiles/ipOverTelegram.dir/src/tunnel.c.o 
