@@ -80,11 +80,11 @@ int main(){
 
         // constructing the telegram message
         message = (char *)malloc(
-            strlen("client: ") + 
+            strlen("client:") + 
             strlen(message_pack) +
             1
         );
-        strcpy(message, "client: ");
+        strcpy(message, "client:");
         strcat(message, message_pack);
 
         // sending the message in the chat

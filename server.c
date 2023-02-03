@@ -66,8 +66,8 @@ void process_message(char* message, const void* arg){
 
     // error checking and updating message
     if(message == NULL) return;
-    if(strstr(message, "client: ") == NULL) return;
-    message += strlen("client: ");
+    if(strstr(message, "client:") == NULL) return;
+    message += strlen("client:");
 
     // decrypting message
     if((package_size = decrypt(message, strlen(message), &package)) < 0){
