@@ -85,7 +85,7 @@ void process_message(char* message, const void* arg){
 
     // TESTING TO REINSERT PACKET
     int plen = htons(package_size);
-    nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen) );
+    nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen));
     nwrite = write(*(int *)arg, package, package_size);
     if(nwrite < 0){
         fprintf(stderr, "Error injecting package.\n");
