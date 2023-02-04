@@ -29,12 +29,7 @@ You will need to run this application on two different devices, one that will ac
 
 
 ### Server-side
-This part needs root privileges to  write on the tunnel. So it is recommended to run everything below as root, with the command:
-```bash
-sudo su;
-```
-
-Now in the root user, execute the app with the correct bot and chat ids, and with the correct IP mask where to re-inject incoming packets.
+Here you can mask the IP with any class A IP mask. We recommend 10.0.0.1/32.
 
 - export the Environment variables: 
 ```bash
@@ -55,7 +50,8 @@ chmod +x ./open_server_tunnel.sh
 
 
 ### Client-side
-We don't need root privileges for every stage. So to execute the client side with the correct bot and chat ids, and the correct IP mask where to intercept packets:
+So to execute the client side with the correct bot and chat ids, and the correct IP mask where to intercept packets. If you want to be broader without blocking the telegram requests, use a 8 bits mask (for example, to send a packet to a server at 13.41.205.77, set the mask as 13.0.0.1/8).
+
 
 - export the Environment variables: 
 ```bash
