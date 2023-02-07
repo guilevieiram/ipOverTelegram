@@ -1,4 +1,3 @@
-#!/bin/bash
 echo "Opening the server tunnel (must be run as root)";
 
 openvpn --mktun --dev tun1;

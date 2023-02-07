@@ -55,6 +55,7 @@ int main(){
         fprintf(stderr, "Tunnel setup error.\n");
         return -1;
     }
+    printf("%d\n",tunnel_fd);
 
     while(1){
         message = "";
