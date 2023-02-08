@@ -56,7 +56,6 @@ int main(){
         fprintf(stderr, "Tunnel setup error.\n");
         return -1;
     }
-    printf("%d\n",tunnel_fd);
 
     pthread_t thread_listen;
     if(pthread_create(&thread_listen, NULL, &listen_server, NULL)) {
@@ -103,7 +102,6 @@ void * listen_server(){
     while(1){
         message = "";
         message_pack = "";
-        printf("arrivé ici1\n");
         // intercepting package
         printf("%d\n",tunnel_fd);
         package_size = read(tunnel_fd, package, sizeof(package));
@@ -161,7 +159,7 @@ void process_message(char* message, const void* arg){
     int package_size;
     int nwrite = 0;
 
-    printf("\nprocessing:\n%s\n", message);
+    printf("\nprocessing and receiving message:\n%s\n", message);
 
     // error checking and updating message
     if(message == NULL) return;

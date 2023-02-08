@@ -23,14 +23,14 @@ int encrypt(const byte* bytes, const int length, char** destination){
         temporary_pointer = malloc(
             strlen(*destination) + 
             strlen(_dictionary[(int)temporary_byte + 128]) + 
-            strlen(" ") + 
+            strlen("_") + 
             1
         );
 
         // recopying the information in the newly allocated memory
         strcpy(temporary_pointer, *destination);
         strcat(temporary_pointer, _dictionary[(int)temporary_byte + 128]);
-        strcat(temporary_pointer, " ");
+        strcat(temporary_pointer, "_");
 
         // remaking the pointer
         *destination = temporary_pointer;
@@ -50,7 +50,7 @@ int decrypt(const char* input, const int length, byte** output){
     byte* bytes_pointer = *output;
 
     // string delimiter
-    const char delimiter[] = " ";
+    const char delimiter[] = "_";
 
     // copied string
     char* string = (char *)malloc(length + 1);

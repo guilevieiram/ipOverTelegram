@@ -150,6 +150,7 @@ int send_message(const char* message, const config_t* config){
     
     response = get(url);
     printf("Response: %s\n", response);
+    printf("%s\n",url);
 
     //processing the result
     if(strstr(response, "\"ok\":true") == NULL){
