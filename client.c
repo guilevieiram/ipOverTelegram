@@ -151,17 +151,15 @@ void process_message(char* message, const void* arg){
 
     // error checking and updating message
     if(message == NULL) return;
-    if(strstr(message, "client: ") == NULL) return;
-    message += strlen("client: ");
-
+    if(strstr(message, "server:") == NULL) return;
+    message += strlen("server:");
     // decrypting message
     if((package_size = decrypt(message, strlen(message), &package)) < 0){
         fprintf(stderr, "Server could not decrypt received message.\n");
         return;
     }
 
-
-    // printing the package data for debugging
+        // printing the package data for debugging
     // this part should reinsert the package back in the network
     printf("dump: \n");
     for (int i = 0; i < package_size; i++)
@@ -171,8 +169,8 @@ void process_message(char* message, const void* arg){
     // TESTING TO REINSERT PACKET
     int plen = htons(package_size);
     pthread_mutex_lock(&lock);
-    nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen));
-    nwrite = write(*(int *)arg, package, package_size);
+    nwrite = write(tunnel_fd, (char *)&plen, sizeof(plen));
+    nwrite = write(tunnel_fd, package, package_size);
     pthread_mutex_unlock(&lock);
     if(nwrite < 0){
         fprintf(stderr, "Error injecting package.\n");
