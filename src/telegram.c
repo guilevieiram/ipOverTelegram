@@ -8,9 +8,11 @@
 
 int parse_response(char** response, char** text, char** date, char** identifier){
     char *date_end, *text_end, *id_end;
+    char* tmp_ident;
 
-    *identifier = strstr(*response, "\"update_id\":");
-    if(*identifier == NULL) return -1;
+    tmp_ident = strstr(*response, "\"update_id\":");
+    if(tmp_ident == NULL) return -1;
+    *identifier = tmp_ident;
     *identifier += strlen("\"update_id\":");
     id_end = strstr(*identifier, ",");
     *id_end = '\0';
@@ -111,9 +113,9 @@ int read_posts(void (*process_response)(char *, const void *), const void* args,
                 timestamp = atoi(date);
                 recent_text = malloc(strlen(text) + 2);
                 strcpy(recent_text, text);
-                recent_identifier = malloc(strlen(identifier) + 2);
-                strcpy(recent_identifier, identifier);
             }
+            recent_identifier = malloc(strlen(identifier) + 2);
+            strcpy(recent_identifier, identifier);
         }
 
         // checking only for new messages
@@ -148,9 +150,9 @@ int send_message(const char* message, const config_t* config){
     strcat(url, "&text=");
     strcat(url, message);
     
+    printf("\nurl: %s \n\n", url);
     response = get(url);
     printf("Response: %s\n", response);
-    printf("%s\n",url);
 
     //processing the result
     if(strstr(response, "\"ok\":true") == NULL){
