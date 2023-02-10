@@ -1,4 +1,3 @@
-#!/bin/bash
 echo "Closing the tunnel $1 (must be run as root)";
 
 ip link set $1 down;
