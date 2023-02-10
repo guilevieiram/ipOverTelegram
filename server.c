@@ -94,7 +94,7 @@ void * listen_server(){
     // CONFIGURING THE BOT
     config.frequency = &frequency;
     config.local_ip = NULL;
-    if(setup(&config, "CLIENT_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
+    if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
         fprintf(stderr, "Client bot setup error.\n");
         return NULL;
     }
@@ -103,7 +103,6 @@ void * listen_server(){
         message = "";
         message_pack = "";
         // intercepting package
-        printf("%d\n",tunnel_fd);
         package_size = read(tunnel_fd, package, sizeof(package));
         // on vérouille pour ne pas mélanger réception et envoi
         pthread_mutex_lock(&lock);

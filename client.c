@@ -134,7 +134,7 @@ void * receive_client(){
 
     config.frequency = &frequency;
     config.local_ip = NULL;
-    if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
+    if(setup(&config, "CLIENT_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
         fprintf(stderr, "Server bot setup error.\n");
         return NULL;
     }
