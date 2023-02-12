@@ -95,11 +95,6 @@ int main(){
 
         // constructing the telegram message
         message = (char *)malloc(
-            strlen("client:") + 
-            strlen(message_pack) +
-            1
-        );
-        strcpy(message, "client:");
             strlen("client:_") + 
             strlen(message_pack) +
             1
