@@ -25,11 +25,13 @@
 void process_message(char* message, const void* arg);
 
 int main(){
+    // bot configuration
     config_t config;
     int frequency = 1;
     int tunnel_fd;
     char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
 
+    // configuring the server bot
     config.frequency = &frequency;
     config.local_ip = NULL;
     if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
@@ -37,18 +39,20 @@ int main(){
         return -1;
     }
 
+    // configuring the tunnel interceptor
     strcpy(tunnel_name, "tun1");
     tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
     if (tunnel_fd < 0){
         fprintf(stderr, "Tunnel setup error.\n");
         return -1;
     }
-
+    // reading telegram message and writing in the tunnel
     if(read_posts(process_message, &tunnel_fd, &config) < 0){
-        fprintf(stderr, "Could bot read posts.\n");
+        fprintf(stderr, "Could not read posts.\n");
         return -1;
     }
 
+    // cleaning
     free(config.bot_id);
     free(config.chat_id);
 

@@ -39,7 +39,7 @@ int main(){
     config_t config;
     int frequency = 1;
 
-    // CONFIGURING THE BOT
+    // CONFIGURING THE CLIENT BOT
     config.frequency = &frequency;
     config.local_ip = NULL;
     if(setup(&config, "CLIENT_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
