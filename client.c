@@ -82,9 +82,9 @@ int main(){
 
         // printing the intercepted package (for debugging purposes)
 
-        // for (int i = 0; i < package_size; i++)
-        //     printf("%02hhX ", package[i]);
-        //     // printf("%d ", package[i]);
+	    printf("Sending packet:\n");
+        for (int i = 0; i < package_size; i++)
+            printf("%02hhX ", package[i]);
 	    printf("\n");
 
 
@@ -163,7 +163,7 @@ void process_message(char* message, const void* arg){
 
         // printing the package data for debugging
     // this part should reinsert the package back in the network
-    printf("\n");
+    printf("Receiving packet:\n");
     for (int i = 0; i < package_size; i++)
         printf("%02hhX ", package[i]);
     printf("\n");
