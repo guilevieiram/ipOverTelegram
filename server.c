@@ -32,17 +32,12 @@ void process_message(char* message, const void* arg);
 void * listen_server();
 
 int main(){
-    // pthread_t thread_listen;
-    // if(pthread_create(&thread_listen, NULL, &listen_server, NULL)) {
-    //     fprintf(stderr, "Error creating thread\n");
-    //     return 1;
-    // }
-
-    // pthread_join(thread_listen, NULL);
+    // bot configuration
 
     config_t config;
     int frequency = 1;
 
+    // configuring the server bot
     config.frequency = &frequency;
     config.local_ip = NULL;
     if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
@@ -50,6 +45,7 @@ int main(){
         return -1;
     }
 
+    // configuring the tunnel interceptor
     strcpy(tunnel_name, "tun1");
     tunnel_fd = tun_alloc(tunnel_name, IFF_TUN | IFF_NO_PI);
     if (tunnel_fd < 0){
@@ -62,12 +58,14 @@ int main(){
         fprintf(stderr, "Error creating thread\n");
         return 1;
     }
-
+    
+    // reading telegram message and writing in the tunnel
     if(read_posts(process_message, &tunnel_fd, &config) < 0){
-        fprintf(stderr, "Could bot read posts.\n");
+        fprintf(stderr, "Could not read posts.\n");
         return -1;
     }
 
+    // cleaning
     free(config.bot_id);
     free(config.chat_id);
 
@@ -158,7 +156,7 @@ void process_message(char* message, const void* arg){
     int package_size;
     int nwrite = 0;
 
-    printf("\nprocessing and receiving message:\n%s\n", message);
+    //printf("\nprocessing:\n%s\n", message);
 
     // error checking and updating message
     if(message == NULL) return;
@@ -173,11 +171,12 @@ void process_message(char* message, const void* arg){
 
     // printing the package data for debugging
     // this part should reinsert the package back in the network
-    printf("dump: \n");
-    for (int i = 0; i < package_size; i++)
-        printf("%02hhX ", package[i]);
-    printf("\nenddump \n");
-    // TESTING TO REINSERT PACKET
+    // printf("dump: \n");
+    // for (int i = 0; i < package_size; i++)
+    //     printf("%02hhX ", package[i]);
+    // printf("\nenddump \n");
+
+
     int plen = htons(package_size);
     // pthread_mutex_lock(&lock);
     nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen));
@@ -187,7 +186,7 @@ void process_message(char* message, const void* arg){
         fprintf(stderr, "Error injecting package.\n");
         return;
     }
-    printf("Bytes written in the tunnel: %d\n", nwrite);
+    //printf("Bytes written in the tunnel: %d\n", nwrite);
 
     return;
 }

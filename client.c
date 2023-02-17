@@ -45,7 +45,7 @@ int main(){
     config_t config;
     int frequency = 1;
 
-    // CONFIGURING THE BOT
+    // CONFIGURING THE CLIENT BOT
     config.frequency = &frequency;
     config.local_ip = NULL;
     if(setup(&config, "CLIENT_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
@@ -81,11 +81,12 @@ int main(){
         }
 
         // printing the intercepted package (for debugging purposes)
-        printf("\nPaquet à envoyer : ");
-        for (int i = 0; i < package_size; i++)
-            printf("%02hhX ", package[i]);
-            // printf("%d ", package[i]);
-	 printf("\n");
+
+        // for (int i = 0; i < package_size; i++)
+        //     printf("%02hhX ", package[i]);
+        //     // printf("%d ", package[i]);
+	    printf("\n");
+
 
         // encrypting the package
         if (encrypt(package, package_size, &message_pack) < 0) {
