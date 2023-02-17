@@ -98,6 +98,14 @@ One application example that will match the server side one is a netcat tcp clie
 nc 10.0.0.2 4444;
 Hello world!
 ```
+For the python server you have two available endpoints that can be accessed with:
+```bash
+curl 10.0.0.2:8000/
+# returns a counter for all the times someone accessed the endpoint
+
+curl 10.0.0.2:8000/getUrl?url="<URL>"
+# returns the content of a GET request made to the provided <URL>
+```
 
 
 ### Miscellaneous
