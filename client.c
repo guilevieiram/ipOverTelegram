@@ -19,18 +19,17 @@
 
 #define MAX_PACKAGE_SIZE 4096
 
-// tunnel (interceptor)
+// global parameters for tunnel (interceptor)
 int tunnel_fd;
-char tunnel_name[IFNAMSIZ];// name of the tunnel used in the interception
+char tunnel_name[IFNAMSIZ];
+
+// mutex parameter to avoid to avoid reading and writing in the tunnel in the same time
 pthread_mutex_t lock;
 
 /**
  * Client implementation
 */
 
-// processing message callback function
-void process_message(char* message, const void* arg);
-void * receive_client();
 
 int main(){
     // package
@@ -65,7 +64,7 @@ int main(){
     pthread_t thread_receive;
     if(pthread_create(&thread_receive, NULL, &receive_client, NULL)) {
         fprintf(stderr, "Error creating thread\n");
-        return 1;
+        return -1;
     }
 
     while(1){
@@ -150,8 +149,6 @@ void process_message(char* message, const void* arg){
     int package_size;
     int nwrite = 0;
 
-    // printf("\nprocessing and receiving message:\n%s\n", message);
-
     // error checking and updating message
     if(message == NULL) return;
     if(strstr(message, "server:") == NULL) return;
@@ -162,14 +159,14 @@ void process_message(char* message, const void* arg){
         return;
     }
 
-        // printing the package data for debugging
-    // this part should reinsert the package back in the network
+    // printing the package data for debugging
     printf("Receiving packet:\n");
     for (int i = 0; i < package_size; i++){
         printf("%02hhX ", package[i]);
     }
     printf("\n\n");
 
+    // this part should reinsert the package back in the network
     // TESTING TO REINSERT PACKET
     int plen = htons(package_size);
     pthread_mutex_lock(&lock);

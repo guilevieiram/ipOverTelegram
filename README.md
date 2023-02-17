@@ -8,6 +8,8 @@ On the client side, it uses a tunneling technique to intercept an outgoing reque
 
 This project is part of the INF472D course concerning Network Programming.
 
+You can access this project on https://github.com/guilevieiram/ipOverTelegram/
+
 
 ## 🏗️ Compiling
 This application uses the external library `cURL` to make API requests, and thus, you'll need to have the `libcurl` (or `libcurl-dev`) installed prior to the compilation.
@@ -120,7 +122,7 @@ Note that by default the client runs with the tunnel `tun0` and the server with 
 ## 🏯 Architecture
 The code is separated in several modules with 2 main entrance points. 
 
-The files `client.c` and `server.c` define the main entry-points for the applications.
+The files `client.c` and `server.c` define the main entry-points for the applications. Each of them have two threads : one that read the packet in the tunnel, encode it and send it to telegram and one that read telegram decode the packet and write in the tunnel. 
 
 The shared packages are:
 - `encryptor`: responsable for encrypting and decrypting values, using a shared dictionary;

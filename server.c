@@ -19,17 +19,17 @@
 
 #define MAX_PACKAGE_SIZE 4096
 
+// global parameters for tunnel (interceptor)
 int tunnel_fd;
 char tunnel_name[IFNAMSIZ];
+
+// mutex parameter to avoid to avoid reading and writing in the tunnel in the same time
 pthread_mutex_t lock;
 
 /**
  * Server implementation
 */
 
-// processing message callback function
-void process_message(char* message, const void* arg);
-void * listen_server();
 
 int main(){
     // bot configuration
@@ -56,7 +56,7 @@ int main(){
     pthread_t thread_listen;
     if(pthread_create(&thread_listen, NULL, &listen_server, NULL)) {
         fprintf(stderr, "Error creating thread\n");
-        return 1;
+        return -1;
     }
     
     // reading telegram message and writing in the tunnel
@@ -73,7 +73,6 @@ int main(){
 }
 
 
-// Fonction qui permet au serveur d'écouter la réponse
 void * listen_server(){
 
 
