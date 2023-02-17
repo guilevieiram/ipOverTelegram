@@ -150,7 +150,8 @@ int send_message(const char* message, const config_t* config){
     strcat(url, "&text=");
     strcat(url, message);
     
-    printf("\nurl: %s \n\n", url);
+    // pour débug
+    // printf("\nurl: %s \n\n", url);
     response = get(url);
 
     //processing the result
