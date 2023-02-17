@@ -62,6 +62,11 @@ Additionally, run a server-side application that the client will access, for exa
 ```bash
 nc -l <PORT>;
 ```
+We also provide an example server made on Python with Flask that can be accessed with: 
+```bash
+python3 -m pip install requests flask;
+python3 server.py;
+```
 
 Now all the incoming packets from the telegram chat will be processed by the server-side application and the responses returned to the client via the same chat.
 
