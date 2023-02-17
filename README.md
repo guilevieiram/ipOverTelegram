@@ -4,11 +4,11 @@
 
 This is an IP over Telegram project that builds a rudimentary tunneling service using a Telegram Bot. It allows the user to access a pre-configured server (for example a REST API) without creating any trafic between his machine and the server. All the package exchange is done via Telegram Bots, securely connected via the HTTPS protocol with a layer of language encoding.
 
-On the client side, it uses a tunneling technique to intercept an outgoing request on Layer 3. It then encodes that request data in a Natural Language format and sends it to a Telegram chat via a bot. The server side then reads the message from the chat, decodes it and completes the request. The response is again encoded and sended via chat to be read by the client side bot and returned to the client application.
+On the client side, it uses a tunneling technique to intercept an outgoing packet. It then encodes that data in a Natural Language format and sends it to a Telegram chat via a bot. The server side then reads the message from the chat, decodes it and completes the request. The response is again encoded and sended via chat to be read by the client side bot and returned to the client application.
 
 This project is part of the INF472D course concerning Network Programming.
 
-You can access this project on https://github.com/guilevieiram/ipOverTelegram/
+All the code is available with instructions at https://github.com/guilevieiram/ipOverTelegram/
 
 
 ## 🏗️ Compiling
@@ -60,7 +60,7 @@ chmod +x ./open_server_tunnel.sh
 ./server
 ```
 
-Additionally, run a server-side application that the client will access, for example a netcat TCP server on any port `<PORT>`:
+Additionally, on another terminal, run a server-side application that the client will access, for example a netcat TCP server on any port `<PORT>`:
 ```bash
 nc -l <PORT>;
 ```
@@ -95,9 +95,9 @@ sudo ./open_client_tunnel.sh <IP_MASK>
 
 
 Now all your trafic that matches the IP mask provided will be redirected through the tunnel to the server. Eventual server responses will be read and reinserted to the local network to reach your client-side application.
-One application example that will match the server side one is a netcat tcp client: 
+One application example that will match the server side one is a netcat TCP client: 
 ```bash
-nc 10.0.0.2 4444;
+nc 10.0.0.2 <PORT>;
 Hello world!
 ```
 For the python server you have two available endpoints that can be accessed with:
@@ -120,18 +120,20 @@ sudo ./close_tunnel.sh <TUNNEL_NAME>
 Note that by default the client runs with the tunnel `tun0` and the server with the tunnel `tun1`.
 
 ## 🏯 Architecture
-The code is separated in several modules with 2 main entrance points. 
+`C` was the language of choice for the project since it allows low level manipulation of network objects like tunnels and sockets. The other functionalities like contacting APIs and encoding/decoding messages were also written in `C` for easier integrability of the whole application.
 
-The files `client.c` and `server.c` define the main entry-points for the applications. Each of them have two threads : one that read the packet in the tunnel, encode it and send it to telegram and one that read telegram decode the packet and write in the tunnel. 
+The code is separated in several modules with 2 main entrance points:
+
+The files `client.h` and `server.h` define the main entry-points for the applications (implemented in their respective `.c` files in the root directory). Each of them executes two threads: one responsible for reading the packet from the tunnel, encoding it and sending it to telegram and one that is responsible for receiving the messages from telegram, decoding it and writing it in the tunnel. 
 
 The shared packages are:
-- `encryptor`: responsable for encrypting and decrypting values, using a shared dictionary;
-- `request`: get-request interface to allow for ease communication with the Telegram api. Uses the cURL library;
-- `telegram`: interface that encapsulates the main functionalities of the bots in the application like sending and reading messages from a chat;
-- `tunnel`: tunnel management/allocation functionalities;
+- `encryptor.h`: responsable for encrypting and decrypting values, using a shared constant dictionary. The encoding is done using the most frequent english words.
+- `request.h`: get-request interface to allow for ease communication with the Telegram api. Uses the cURL library to allow easy utilisation of HTTP/HTTPS requests;
+- `telegram.h`: interface that encapsulates the main functionalities of the bots in the application like sending and reading messages from a chat;
+- `tunnel.h`: tunnel management/allocation functionalities;
 
 External packages:
-- `cURL`: to make easy https requests to the Telegram API;
+- `cURL`: to make easy HTTPS requests to the Telegram API;
 
 More information on the packages can be found on their respective header files (in the `include` folder).
 
@@ -154,6 +156,7 @@ In this image we have the general functioning of the program:
 11. The client reinserts the raw packet in the network and it is received by the client-side application;
 12. Your access to the server is complete!
 
+### Conclusion
 
 What you have managed is to access a server-side application remotely while redirecting all the trafic to and from the server through an encoded (with natural language) and encrypted (HTTPS) Telegram message on a chat.
 This allows you to have a server being protected by a firewall and still being accessible. Also the connection is super secure, so even if someone is monitoring your client or server network activity, they will not be able to identify or reconstruct the connection.

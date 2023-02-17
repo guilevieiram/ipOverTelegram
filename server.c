@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <linux/if_tun.h>
 #include <net/if.h>
 #include <unistd.h>
@@ -29,11 +28,11 @@ pthread_mutex_t lock;
 /**
  * Server implementation
 */
-
-
 int main(){
-    // bot configuration
+    // tunnel
+    char tunnel_name[IFNAMSIZ];
 
+    // bot configuration
     config_t config;
     int frequency = 1;
 
@@ -54,7 +53,7 @@ int main(){
     }
 
     pthread_t thread_listen;
-    if(pthread_create(&thread_listen, NULL, &listen_server, NULL)) {
+    if(pthread_create(&thread_listen, NULL, &listen_server, (void *)&config)) {
         fprintf(stderr, "Error creating thread\n");
         return -1;
     }
@@ -73,8 +72,7 @@ int main(){
 }
 
 
-void * listen_server(){
-
+void* listen_server(void* config){
 
     // package
     byte package[MAX_PACKAGE_SIZE];
@@ -84,24 +82,13 @@ void * listen_server(){
     char* message_pack = (char *)malloc(1);
     char* message = (char *)malloc(1);
 
-    // bot configuration  
-    config_t config;
-    int frequency = 1;
-
-    // CONFIGURING THE BOT
-    config.frequency = &frequency;
-    config.local_ip = NULL;
-    if(setup(&config, "SERVER_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
-        fprintf(stderr, "Client bot setup error.\n");
-        return NULL;
-    }
-
     while(1){
+        // initializing values
         message = "";
         message_pack = "";
+
         // intercepting package
         package_size = read(tunnel_fd, package, sizeof(package));
-        // on vérouille pour ne pas mélanger réception et envoi
         pthread_mutex_lock(&lock);
         if(package_size < 0){
             fprintf(stderr, "Error capturing package.\n");
@@ -131,20 +118,16 @@ void * listen_server(){
         strcat(message, message_pack);
 
         // sending the message in the chat
-        if(send_message(message, &config) < 0){
+        if(send_message(message, (config_t* )config) < 0){
             fprintf(stderr, "Error sending message.\n");
             return NULL;
         }
         pthread_mutex_unlock(&lock);
     }
-    printf("%s",message);
-
 
     // cleanup
     free(message);
     free(message_pack);
-    free(config.bot_id);
-    free(config.chat_id);
 
     return NULL;
 }
@@ -156,11 +139,15 @@ void process_message(char* message, const void* arg){
     int package_size;
     int nwrite = 0;
 
-    //printf("\nprocessing:\n%s\n", message);
-
-    // error checking and updating message
+    // error checking 
+    if(arg != NULL){
+        fprintf(stderr, "No additional arguments must be passed into this function.\n");
+        return;
+    }
     if(message == NULL) return;
     if(strstr(message, "client:") == NULL) return;
+
+    // updating message
     message += strlen("client:");
 
     // decrypting message
@@ -169,25 +156,21 @@ void process_message(char* message, const void* arg){
         return;
     }
 
-    // printing the package data for debugging
-    // this part should reinsert the package back in the network
+    // printing the package data 
     printf("Receiving packet: \n");
     for (int i = 0; i < package_size; i++){
         printf("%02hhX ", package[i]);
     }
     printf("\n\n");
 
-
+    // Writing the data in the tunnel  
     int plen = htons(package_size);
-    // pthread_mutex_lock(&lock);
-    nwrite = write(*(int *)arg, (char *)&plen, sizeof(plen));
-    nwrite = write(*(int *)arg, package, package_size);
-    // pthread_mutex_unlock(&lock);
+    nwrite = write(tunnel_fd, (char *)&plen, sizeof(plen));
+    nwrite = write(tunnel_fd, package, package_size);
     if(nwrite < 0){
         fprintf(stderr, "Error injecting package.\n");
         return;
     }
-    //printf("Bytes written in the tunnel: %d\n", nwrite);
 
     return;
 }

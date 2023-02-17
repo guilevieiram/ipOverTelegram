@@ -10,13 +10,13 @@
 */
 
 #define ENVBUFF 160 // buffer for the env variables
+#define MAX_PACKAGE_SIZE 4096 // max package size allowed by telegram
 
 struct config_t {
     char* local_ip; // string storing the local ip address to be refereed by the bot. 
     char* bot_id; // bot identifier. Provided by telegram
     char* chat_id; // chat identifier. Provided by telegram
     int* frequency; // number of requests per second to check for incoming messages
-    
 };
 typedef struct config_t config_t;
 

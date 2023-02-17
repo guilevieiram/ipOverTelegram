@@ -26,7 +26,7 @@ int main();
  * 
  * This functions decode a package and write it in the tunnel
  * 
- * @param message: the message to be decoded and writen in the tunnel
+ * @param message: the message to be decoded and written in the tunnel
  * @param args: the additional argument(s) to be passed
 */
 void process_message(char* message, const void* arg);
@@ -35,7 +35,9 @@ void process_message(char* message, const void* arg);
  * Receive client.
  * 
  * The client-side function that read telegram message, decode it and write it in the tunnel
+ * @param arg: any eventual arguments that this helper function might need
+ * 
 */
-void * receive_client();
+void* receive_client(void* arg);
 
 #endif //CLIENT_H_

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <linux/if_tun.h>
 #include <net/if.h>
 #include <unistd.h>
@@ -17,11 +16,8 @@
 #include "encryptor.h"
 #include "tunnel.h"
 
-#define MAX_PACKAGE_SIZE 4096
-
 // global parameters for tunnel (interceptor)
 int tunnel_fd;
-char tunnel_name[IFNAMSIZ];
 
 // mutex parameter to avoid to avoid reading and writing in the tunnel in the same time
 pthread_mutex_t lock;
@@ -29,8 +25,6 @@ pthread_mutex_t lock;
 /**
  * Client implementation
 */
-
-
 int main(){
     // package
     byte package[MAX_PACKAGE_SIZE];
@@ -43,6 +37,9 @@ int main(){
     // bot configuration  
     config_t config;
     int frequency = 1;
+
+    // tunnel
+    char tunnel_name[IFNAMSIZ];
 
     // CONFIGURING THE CLIENT BOT
     config.frequency = &frequency;
@@ -62,7 +59,7 @@ int main(){
     }
 
     pthread_t thread_receive;
-    if(pthread_create(&thread_receive, NULL, &receive_client, NULL)) {
+    if(pthread_create(&thread_receive, NULL, &receive_client, &config)) {
         fprintf(stderr, "Error creating thread\n");
         return -1;
     }
@@ -121,53 +118,46 @@ int main(){
     return 1;
 }
 
-void * receive_client(){
-    config_t config;
-    int frequency = 1;
-
-    config.frequency = &frequency;
-    config.local_ip = NULL;
-    if(setup(&config, "CLIENT_BOT_ID", "TELEGRAM_CHAT_ID") < 0){
-        fprintf(stderr, "Server bot setup error.\n");
-        return NULL;
-    }
-
-    if(read_posts(process_message, &tunnel_fd, &config) < 0){
+void* receive_client(void* config){
+    if(read_posts(process_message, &tunnel_fd, (config_t* )config) < 0){
         fprintf(stderr, "Could bot read posts.\n");
         return NULL;
     }
-
-    free(config.bot_id);
-    free(config.chat_id);
-
     return NULL;
 }
 
 void process_message(char* message, const void* arg){
+
     // package variables
     byte* package = malloc(1);
     int package_size;
     int nwrite = 0;
 
-    // error checking and updating message
+    // error checking 
+    if(arg != NULL){
+        fprintf(stderr, "No additional arguments must be passed into this function.\n");
+        return;
+    }
     if(message == NULL) return;
     if(strstr(message, "server:") == NULL) return;
+
+    // updating message
     message += strlen("server:");
+
     // decrypting message
     if((package_size = decrypt(message, strlen(message), &package)) < 0){
         fprintf(stderr, "Server could not decrypt received message.\n");
         return;
     }
 
-    // printing the package data for debugging
+    // printing the package data
     printf("Receiving packet:\n");
     for (int i = 0; i < package_size; i++){
         printf("%02hhX ", package[i]);
     }
     printf("\n\n");
 
-    // this part should reinsert the package back in the network
-    // TESTING TO REINSERT PACKET
+    // reinserting the package back in to the network
     int plen = htons(package_size);
     pthread_mutex_lock(&lock);
     nwrite = write(tunnel_fd, (char *)&plen, sizeof(plen));

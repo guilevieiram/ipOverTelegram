@@ -60,6 +60,7 @@ build/
 main
 client
 server
+Makefile
 
 # environmental variables
 

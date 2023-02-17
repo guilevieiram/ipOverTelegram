@@ -26,7 +26,7 @@ int main();
  * 
  * This functions decode a package and write it in the tunnel
  * 
- * @param message: the message to be decoded and writen in the tunnel
+ * @param message: the message to be decoded and written in the tunnel
  * @param args: the additional argument(s) to be passed
 */
 void process_message(char* message, const void* arg);
@@ -34,9 +34,11 @@ void process_message(char* message, const void* arg);
 /**
  * Listen server.
  * 
- * The server-side function that read in the tunel, encode the message and send it to telegram
+ * The server-side function that read in the tunnel, encode the message and send it to telegram
+ * @param arg: any eventual arguments that this helper function might need
+ * 
 */
-void * listen_server();
+void* listen_server(void* arg);
 
 
 #endif //SERVER_H_
