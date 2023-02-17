@@ -86,7 +86,7 @@ int main(){
         for (int i = 0; i < package_size; i++){
             printf("%02hhX ", package[i]);
         }
-	    printf("\n");
+	    printf("\n\n");
 
 
         // encrypting the package
@@ -168,7 +168,7 @@ void process_message(char* message, const void* arg){
     for (int i = 0; i < package_size; i++){
         printf("%02hhX ", package[i]);
     }
-    printf("\n");
+    printf("\n\n");
 
     // TESTING TO REINSERT PACKET
     int plen = htons(package_size);
@@ -180,7 +180,6 @@ void process_message(char* message, const void* arg){
         fprintf(stderr, "Error injecting package.\n");
         return;
     }
-    printf("Bytes written in the tunnel: %d\n", nwrite);
 
     return;
 }

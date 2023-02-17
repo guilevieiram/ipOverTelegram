@@ -114,7 +114,7 @@ void * listen_server(){
         for (int i = 0; i < package_size; i++){
             printf("%02hhX ", package[i]);
         }
-        printf("\n");
+        printf("\n\n");
 
         // encrypting the package
         if (encrypt(package, package_size, &message_pack) < 0) {
@@ -176,7 +176,7 @@ void process_message(char* message, const void* arg){
     for (int i = 0; i < package_size; i++){
         printf("%02hhX ", package[i]);
     }
-    printf("\nenddump \n");
+    printf("\n\n");
 
 
     int plen = htons(package_size);
