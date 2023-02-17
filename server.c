@@ -59,7 +59,7 @@ int main(){
     }
     
     // reading telegram message and writing in the tunnel
-    if(read_posts(process_message, &tunnel_fd, &config) < 0){
+    if(read_posts(process_message, NULL, &config) < 0){
         fprintf(stderr, "Could not read posts.\n");
         return -1;
     }
