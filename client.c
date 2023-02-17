@@ -119,7 +119,7 @@ int main(){
 }
 
 void* receive_client(void* config){
-    if(read_posts(process_message, &tunnel_fd, (config_t* )config) < 0){
+    if(read_posts(process_message, NULL, (config_t* )config) < 0){
         fprintf(stderr, "Could bot read posts.\n");
         return NULL;
     }
