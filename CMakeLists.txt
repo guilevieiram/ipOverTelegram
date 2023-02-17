@@ -15,8 +15,8 @@ file(GLOB SOURCES "src/*.c")
 add_library(ipOverTelegram SHARED ${SOURCES})
 
 
-add_executable(client src/client.c)
-add_executable(server src/server.c)
+add_executable(client client.c)
+add_executable(server server.c)
 
 target_link_libraries(client ipOverTelegram)
 target_link_libraries(server ipOverTelegram)
