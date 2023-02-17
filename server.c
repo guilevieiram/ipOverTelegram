@@ -111,9 +111,11 @@ void * listen_server(){
         
 
         // printing the intercepted package (for debugging purposes)
+        printf("\n");
         for (int i = 0; i < package_size; i++)
             printf("%02hhX ", package[i]);
             // printf("%d ", package[i]);
+        printf("\n");
 
         // encrypting the package
         if (encrypt(package, package_size, &message_pack) < 0) {
